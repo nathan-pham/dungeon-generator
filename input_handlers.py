@@ -8,7 +8,7 @@ class EventHandler(tcod.event.EventDispatch[Action]):
         raise SystemExit()
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
-        action = None
+        action: Optional[Action] = None
         key = event.sym
 
         if key == tcod.event.K_UP:
