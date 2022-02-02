@@ -8,9 +8,11 @@ import tile_types
 
 if TYPE_CHECKING:
     from entity import Entity
+    from engine import Engine
 
 class GameMap:
-    def __init__(self, width: int, height: int, entities: Iterable[Entity]=()):
+    def __init__(self, engine: Engine, width: int, height: int, entities: Iterable[Entity]=()):
+        self.engine = engine
         self.width, self.height = width, height
         self.entities = set(entities)
 
@@ -24,7 +26,7 @@ class GameMap:
         return 0 <= x < self.width and 0 <= y < self.height
 
 
-    def get_blocking_entity(self, x: int, y: int) -> Optional[Entity]:
+    def get_blocking_entity_at_location(self, x: int, y: int) -> Optional[Entity]:
         for entity in self.entities:
             if entity.x == x and entity.y == y and entity.blocks_movement:
                 return entity
