@@ -1,29 +1,25 @@
-
-
-from typing import Any, Iterable
-
 from tcod.console import Console
 from tcod.context import Context
 from tcod.map import compute_fov
 
-from actions import EscapeAction, MovementAction
 from input_handlers import EventHandler
 
-from entity import Entity
+from entity import Actor
 
 from game_map import GameMap
 
 class Engine:
     game_map: GameMap
 
-    def __init__(self, player: Entity):
+    def __init__(self, player: Actor):
         self.event_handler = EventHandler(self)
         self.player = player
 
 
     def handle_enemy_turns(self) -> None:
-        for entity in self.game_map.entities - {self.player}:
-            print(f"The {entity.name} wonders when it will get to take a real turn.")
+        for entity in set(self.game_map.actors) - {self.player}:
+            if entity.ai:
+                entity.ai.perform()
 
 
     def update_fov(self) -> None:
